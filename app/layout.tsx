@@ -12,8 +12,8 @@ export const metadata: Metadata = {
   },
   // Favicon yo'li shu yerda ko'rsatiladi:
   icons: {
-    icon: "/images/favicon.jpg", // public papkasi ichidagi yo'l
-    apple: "/images/favicon.jpg", // Apple qurilmalari uchun (ixtiyoriy)
+    icon: "/images/favicon2.jpg", // public papkasi ichidagi yo'l
+    apple: "/images/favicon2.jpg", // Apple qurilmalari uchun (ixtiyoriy)
   },
 };
 
