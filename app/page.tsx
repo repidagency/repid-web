@@ -1028,7 +1028,7 @@ export default function Home() {
           <div className="founder-grid">
             <div className="founder">
               <div className="ph">
-                <img src="/founders/oybek.jpg" alt="Oybek Tojiyev" />
+                <img src="/images/toj.jpg" alt="Oybek Tojiyev" />
               </div>
               <div>
                 <h3>Oybek Tojiyev</h3>
