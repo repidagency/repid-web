@@ -10,9 +10,8 @@ export const metadata: Metadata = {
   verification: {
     google: "T0rgMF_8ciWMPcSQ6yNRu-gu_lXI4xvgMF4k6O7s_fw",
   },
-  // Favicon yo'li shu yerda ko'rsatiladi:
   icons: {
-    icon: "/images/favicon2.png", // public papkasi ichidagi yo'l
+    icon: "/images/favicon2.png",
     apple: "/images/favicon2.png", // Apple qurilmalari uchun (ixtiyoriy)
   },
 };
