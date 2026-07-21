@@ -12,6 +12,8 @@ type Case = {
   nicheRu: string;
   name: string;
   url: string;
+  descUz?: string;
+  descRu?: string;
   resultUz?: string;
   resultRu?: string;
 };
@@ -71,6 +73,10 @@ const ALL: Case[] = [
     nicheRu: "Клиника",
     name: "Hilol Med",
     url: "https://hilol-med.uz/",
+    descUz:
+      "Atigi $150 qidiruv reklama byudjeti bilan 11 000+ ko‘rsatish hamda 592 ta maqsadli harakat (qo‘ng‘iroq va ariza) olib keldik. 6 oy ichida puxta tuzilgan SEO matnlarimiz sabab Google saytni o‘zi organik ravishda birinchi o‘rinlarga chiqara boshladi. Bugungi kunda sayt oqimining 50.9% qismi mutlaqo bepul (organik) trafik hisobiga to‘g‘ri kelmoqda!",
+    descRu:
+      "С бюджетом на поисковую рекламу всего в $150 мы получили более 11 000 показов и 592 целевых действия (звонки и заявки). За 6 месяцев благодаря грамотно составленным SEO-текстам Google начал автоматически выводить сайт на первые позиции в органической выдаче. На сегодняшний день 50,9% всего трафика сайта приходится на абсолютно бесплатный (органический) поток!",
     resultUz: "$150 → 592 telefon · 50.9% organika",
     resultRu: "$150 → 592 звонка · 50.9% органики",
   },
@@ -80,6 +86,10 @@ const ALL: Case[] = [
     nicheRu: "Патенты",
     name: "Patent Markazi",
     url: "https://patent-markazi.uz/",
+    descUz:
+      "6 oydan beri to‘xtovsiz stabil ravishda oyiga 100+ ta sifatli lead oqimi! Huquqiy xizmatlar sohasida yuqori raqobatga qaramasdan, SEO va Google Ads sinergiyasi orqali barqaror va prognozli natija ta'minlandi. Google Ads reklamamizda 20.05% rekord CTR natijasiga erishilib, har 7-8 soatda yangi mijoz kelishi yo‘lga qo‘yildi.",
+    descRu:
+      "Уже 6 месяцев мы непрерывно и стабильно получаем 100+ качественных лидов в месяц! Несмотря на высокую конкуренцию в сфере юридических услуг, синергия SEO и Google Ads обеспечила устойчивый и прогнозируемый результат. В рекламе Google Ads мы достигли рекордного CTR в 20,05%, наладив приток нового клиента каждые 7–8 часов.",
     resultUz: "100+ lead/oy · 2 oy barqaror",
     resultRu: "100+ лидов/мес · стабильно 2 мес",
   },
@@ -89,6 +99,10 @@ const ALL: Case[] = [
     nicheRu: "Производство",
     name: "Fenitec",
     url: "https://fenitec.uz/",
+    descUz:
+      "6 oylik kompleks SEO-strategiya natijasida loyihani Google’ning yuqori o‘rinlariga (TOP) olib chiqdik. Eng muhimi — natijalar va B2B savdolar o‘sishi uzoq kuttirmasdan, birinchi oyning o‘zidayoq boshlandi! Chuqur texnik optimallashtirish va to‘g‘ri kalit so‘zlar bazasi evaziga 20+ dan ortiq sanoat iboralari TOP-10 ga kirdi va zavod uchun ulgurji xaridorlar oqimi shakllantirildi.",
+    descRu:
+      "В результате 6-месячной комплексной SEO-стратегии мы вывели проект в ТОП поисковой выдачи Google. Что самое важное — результаты и рост B2B-продаж не заставили себя ждать и начались уже с первого месяца! Благодаря глубокой технической оптимизации и правильно подобранному семантическому ядру более 20 промышленных запросов вошли в ТОП-10, что сформировало стабильный поток оптовых покупателей для завода.",
     resultUz: "3 oylik maqsad 1 oyda · 50+ TOP",
     resultRu: "План 3 мес — за 1 мес · 50+ TOP",
   },
@@ -281,81 +295,6 @@ export default function CasesPage() {
         </div>
       </section>
 
-      {/* TOP-3 detailed */}
-      <section className="bg-w-to-soft" style={{ paddingTop: 40 }}>
-        <div className="wrap">
-          <div className="sec-head">
-            <span className="eyebrow">
-              <span className="ln" />
-              <span data-uz>Eng yorqin natijalar</span>
-              <span data-ru>Лучшие кейсы</span>
-            </span>
-            <h2>
-              <span data-uz>Detal bilan</span>
-              <span data-ru>В деталях</span>
-            </h2>
-          </div>
-          {TOP3.map((c, i) => (
-            <div
-              key={c.slug}
-              className={`case-top${i % 2 === 1 ? " rev" : ""}`}
-            >
-              <div className="case-top-img">
-                {hasImage(c.slug) ? (
-                  <img src={`/cases/${c.slug}.jpg`} alt={c.name} />
-                ) : (
-                  <div
-                    style={{
-                      aspectRatio: "16/10",
-                      background:
-                        "linear-gradient(135deg,var(--bg2),var(--accent-soft))",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: 48,
-                      color: "var(--accent)",
-                      fontWeight: 800,
-                    }}
-                  >
-                    {c.name[0]}
-                  </div>
-                )}
-              </div>
-              <div>
-                <div className="niche">
-                  <span data-uz>{c.nicheUz}</span>
-                  <span data-ru>{c.nicheRu}</span>
-                </div>
-                <h3>{c.name}</h3>
-                <p className="desc">
-                  <span data-uz>{c.descUz}</span>
-                  <span data-ru>{c.descRu}</span>
-                </p>
-                <div className="res-pills">
-                  {c.pills.map((p) => (
-                    <span key={p} className="pill">
-                      {p}
-                    </span>
-                  ))}
-                </div>
-                <div style={{ marginTop: 18 }}>
-                  <a
-                    href={c.url}
-                    target="_blank"
-                    rel="noopener"
-                    className="btn btn-g"
-                    style={{ fontSize: 14, padding: "10px 22px" }}
-                  >
-                    <span data-uz>Saytni ko‘rish →</span>
-                    <span data-ru>Открыть сайт →</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ALL 14 grid */}
       <section className="bg-soft">
         <div className="wrap">
@@ -366,8 +305,8 @@ export default function CasesPage() {
               <span data-ru>Все проекты</span>
             </span>
             <h2>
-              <span data-uz>14 soha — bir jamoa</span>
-              <span data-ru>14 ниш — одна команда</span>
+              <span data-uz>24 soha — bir jamoa</span>
+              <span data-ru>24 ниш — одна команда</span>
             </h2>
           </div>
           <div className="cases-grid">
@@ -378,6 +317,7 @@ export default function CasesPage() {
                 target="_blank"
                 rel="noopener"
                 className="case-card"
+                style={{ display: "flex", flexDirection: "column" }}
               >
                 <div className="shot">
                   {hasImage(c.slug) ? (
@@ -401,7 +341,14 @@ export default function CasesPage() {
                     </div>
                   )}
                 </div>
-                <div className="body">
+                <div
+                  className="body"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    flexGrow: 1,
+                  }}
+                >
                   <div className="niche">
                     <span data-uz>{c.niche}</span>
                     <span data-ru>{c.nicheRu}</span>
@@ -410,13 +357,34 @@ export default function CasesPage() {
                   <div className="url">
                     {new URL(c.url).hostname.replace(/^www\./, "")}
                   </div>
+                  {c.descUz && (
+                    <p
+                      className="desc"
+                      style={{
+                        marginTop: 12,
+                        marginBottom: 12,
+                        fontSize: 14,
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      <span data-uz>{c.descUz}</span>
+                      <span data-ru>{c.descRu}</span>
+                    </p>
+                  )}
                   {c.resultUz && (
-                    <div className="res">
+                    <div
+                      className="res"
+                      style={{
+                        marginTop: 8,
+                        marginBottom: 16,
+                        fontWeight: 600,
+                      }}
+                    >
                       <span data-uz>{c.resultUz}</span>
                       <span data-ru>{c.resultRu}</span>
                     </div>
                   )}
-                  <div className="lnk">
+                  <div className="lnk" style={{ marginTop: "auto" }}>
                     <span data-uz>Saytni ochish →</span>
                     <span data-ru>Открыть сайт →</span>
                   </div>
