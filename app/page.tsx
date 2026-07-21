@@ -60,8 +60,8 @@ export default function Home() {
             </div>
             <div>
               <span className="ck">✓</span>
-              <span data-uz>14 loyiha · har xil soha</span>
-              <span data-ru>14 проектов · разные ниши</span>
+              <span data-uz>24 loyiha · har xil soha</span>
+              <span data-ru>24 проектов · разные ниши</span>
             </div>
           </div>
         </div>
@@ -457,7 +457,7 @@ export default function Home() {
         <div className="wrap">
           <div className="stat">
             <div className="n">
-              14<s>+</s>
+              24<s>+</s>
             </div>
             <div className="t">
               <span data-uz>Bir vaqtdagi loyiha</span>
@@ -611,8 +611,8 @@ export default function Home() {
           </div>
           <div className="proof-cta">
             <a href="/service/seo" className="btn btn-d">
-              <span data-uz>Barcha 14 ta loyihani ko‘rish →</span>
-              <span data-ru>Смотреть все 14 проектов →</span>
+              <span data-uz>Barcha 24 ta loyihani ko‘rish →</span>
+              <span data-ru>Смотреть все 24 проектов →</span>
             </a>
           </div>
         </div>

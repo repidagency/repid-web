@@ -6,7 +6,7 @@ import Widgets from "./Widgets";
 export const metadata: Metadata = {
   title: "Repid Agency — Saytingizga Google’dan mijoz oqimini ochamiz",
   description:
-    "Organik SEO, Google Ads, web va CRM. Bepul strategik suhbat, kunlik hisobot, 14 loyiha real natijalari.",
+    "Organik SEO, Google Ads, web sayt. Bepul strategik suhbat, kunlik hisobot, 24 loyiha real natijalari.",
   verification: {
     google: "T0rgMF_8ciWMPcSQ6yNRu-gu_lXI4xvgMF4k6O7s_fw",
   },

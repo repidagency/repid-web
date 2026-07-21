@@ -33,9 +33,9 @@ const TOP3: {
     name: "Hilol Med",
     url: "https://hilol-med.uz/",
     descUz:
-      "Atigi $150 byudjet bilan oy davomida 11 000+ ko‘rsatish va 592 ta telefonga bosish. 6 oydan keyin Google saytni o‘zi tavsiya qila boshladi — organik trafik reklamani ortda qoldirdi.",
+      "Atigi $150 qidiruv reklama byudjeti bilan 11 000+ ko‘rsatish hamda 592 ta maqsadli harakat (qo‘ng‘iroq va ariza) olib keldik. 6 oy ichida puxta tuzilgan SEO matnlarimiz sabab Google saytni o‘zi organik ravishda birinchi o‘rinlarga chiqara boshladi. Bugungi kunda sayt oqimining 50.9% qismi mutlaqo bepul (organik) trafik hisobiga to‘g‘ri kelmoqda!",
     descRu:
-      "С бюджетом всего $150 — 11 000+ показов в месяц и 592 клика на телефон. Через 6 месяцев Google сам начал рекомендовать сайт — органика обогнала рекламу.",
+      "С бюджетом на поисковую рекламу всего в $150 мы получили более 11 000 показов и 592 целевых действия (звонки и заявки). За 6 месяцев благодаря грамотно составленным SEO-текстам Google начал автоматически выводить сайт на первые позиции в органической выдаче. На сегодняшний день 50,9% всего трафика сайта приходится на абсолютно бесплатный (органический) поток!",
     pills: ["$150 → 592", "CTR 7.59%", "CPC $0.13", "50.9% organic"],
   },
   {
@@ -45,10 +45,10 @@ const TOP3: {
     name: "Fenitec",
     url: "https://fenitec.uz/",
     descUz:
-      "3 oylik reja asosida boshlangan loyiha — birinchi oyda kutilgan natijalarning katta qismiga yetdik. 50+ kalit so‘z Google TOP’iga chiqdi, B2B savdo ko‘paydi.",
+      "6 oylik kompleks SEO-strategiya natijasida loyihani Google’ning yuqori o‘rinlariga (TOP) olib chiqdik. Eng muhimi — natijalar va B2B savdolar o‘sishi uzoq kuttirmasdan, birinchi oyning o‘zidayoq boshlandi! Chuqur texnik optimallashtirish va to‘g‘ri kalit so‘zlar bazasi evaziga 20+ dan ortiq sanoat iboralari TOP-10 ga kirdi va zavod uchun ulgurji xaridorlar oqimi shakllantirildi.",
     descRu:
-      "Проект на 3 месяца — за первый месяц достигли большей части запланированного. 50+ ключей в TOP Google, рост B2B-продаж.",
-    pills: ["3 oy → 1 oyda", "50+ TOP", "B2B"],
+      "В результате 6-месячной комплексной SEO-стратегии мы вывели проект в ТОП поисковой выдачи Google. Что самое важное — результаты и рост B2B-продаж не заставили себя ждать и начались уже с первого месяца! Благодаря глубокой технической оптимизации и правильно подобранному семантическому ядру более 20 промышленных запросов вошли в ТОП-10, что сформировало стабильный поток оптовых покупателей для завода.",
+    pills: ["6 oy → 1 oyda", "20+ TOP", "B2B"],
   },
   {
     slug: "patent-markazi",
@@ -57,10 +57,10 @@ const TOP3: {
     name: "Patent Markazi",
     url: "https://patent-markazi.uz/",
     descUz:
-      "2 oy qatorasiga 100+ ta lead/oy — barqaror, prognozli oqim. Yangi mijoz har 7-8 soatda kelib turdi.",
+      "6 oydan beri to‘xtovsiz stabil ravishda oyiga 100+ ta sifatli lead oqimi! Huquqiy xizmatlar sohasida yuqori raqobatga qaramasdan, SEO va Google Ads sinergiyasi orqali barqaror va prognozli natija ta'minlandi. Google Ads reklamamizda 20.05% rekord CTR natijasiga erishilib, har 7-8 soatda yangi mijoz kelishi yo‘lga qo‘yildi.",
     descRu:
-      "Два месяца подряд по 100+ лидов в месяц — стабильный, прогнозируемый поток. Новый клиент в среднем каждые 7-8 часов.",
-    pills: ["100+/oy", "2 oy stabil", "~7h/lead"],
+      "Уже 6 месяцев мы непрерывно и стабильно получаем 100+ качественных лидов в месяц! Несмотря на высокую конкуренцию в сфере юридических услуг, синергия SEO и Google Ads обеспечила устойчивый и прогнозируемый результат. В рекламе Google Ads мы достигли рекордного CTR в 20,05%, наладив приток нового клиента каждые 7–8 часов.",
+    pills: ["100+/oy", "6 oy stabil", "~7h/lead"],
   },
 ];
 
@@ -220,16 +220,16 @@ export default function CasesPage() {
         <div className="wrap">
           <span className="eyebrow">
             <span className="ln" />
-            <span data-uz>14 loyiha</span>
-            <span data-ru>14 проектов</span>
+            <span data-uz>24 loyiha</span>
+            <span data-ru>24 проектов</span>
           </span>
           <h1>
             <span data-uz>
-              <span className="hl">14 loyiha</span>, har xil soha. Bitta tizim —
+              <span className="hl">24 loyiha</span>, har xil soha. Bitta tizim —
               bitta natija
             </span>
             <span data-ru>
-              <span className="hl">14 проектов</span>, разные ниши. Одна система
+              <span className="hl">24 проектов</span>, разные ниши. Одна система
               — один результат
             </span>
           </h1>
