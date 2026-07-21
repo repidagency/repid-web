@@ -247,7 +247,7 @@ export default function CasesPage() {
           <div className="cases-stats">
             <div className="stat">
               <div className="n">
-                14<s>+</s>
+                24<s>+</s>
               </div>
               <div className="t">
                 <span data-uz>loyihalar</span>
