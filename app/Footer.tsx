@@ -47,8 +47,8 @@ export default function Footer() {
             <ul>
               <li>
                 <a href="/cases">
-                  <span data-uz>14 loyiha</span>
-                  <span data-ru>14 проектов</span>
+                  <span data-uz>24 loyiha</span>
+                  <span data-ru>24 проектов</span>
                 </a>
               </li>
               <li>

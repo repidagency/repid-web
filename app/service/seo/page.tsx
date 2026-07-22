@@ -90,8 +90,8 @@ const ALL: Case[] = [
       "6 oydan beri to‘xtovsiz stabil ravishda oyiga 100+ ta sifatli lead oqimi! Huquqiy xizmatlar sohasida yuqori raqobatga qaramasdan, SEO va Google Ads sinergiyasi orqali barqaror va prognozli natija ta'minlandi. Google Ads reklamamizda 20.05% rekord CTR natijasiga erishilib, har 7-8 soatda yangi mijoz kelishi yo‘lga qo‘yildi.",
     descRu:
       "Уже 6 месяцев мы непрерывно и стабильно получаем 100+ качественных лидов в месяц! Несмотря на высокую конкуренцию в сфере юридических услуг, синергия SEO и Google Ads обеспечила устойчивый и прогнозируемый результат. В рекламе Google Ads мы достигли рекордного CTR в 20,05%, наладив приток нового клиента каждые 7–8 часов.",
-    resultUz: "100+ lead/oy · 2 oy barqaror",
-    resultRu: "100+ лидов/мес · стабильно 2 мес",
+    resultUz: "100+ lead/oy · 6 oy barqaror",
+    resultRu: "100+ лидов/мес · стабильно 6 мес",
   },
   {
     slug: "fenitec",
@@ -103,8 +103,8 @@ const ALL: Case[] = [
       "6 oylik kompleks SEO-strategiya natijasida loyihani Google’ning yuqori o‘rinlariga (TOP) olib chiqdik. Eng muhimi — natijalar va B2B savdolar o‘sishi uzoq kuttirmasdan, birinchi oyning o‘zidayoq boshlandi! Chuqur texnik optimallashtirish va to‘g‘ri kalit so‘zlar bazasi evaziga 20+ dan ortiq sanoat iboralari TOP-10 ga kirdi va zavod uchun ulgurji xaridorlar oqimi shakllantirildi.",
     descRu:
       "В результате 6-месячной комплексной SEO-стратегии мы вывели проект в ТОП поисковой выдачи Google. Что самое важное — результаты и рост B2B-продаж не заставили себя ждать и начались уже с первого месяца! Благодаря глубокой технической оптимизации и правильно подобранному семантическому ядру более 20 промышленных запросов вошли в ТОП-10, что сформировало стабильный поток оптовых покупателей для завода.",
-    resultUz: "3 oylik maqsad 1 oyda · 50+ TOP",
-    resultRu: "План 3 мес — за 1 мес · 50+ TOP",
+    resultUz: "6 oylik maqsad 1 oyda · 20+ TOP",
+    resultRu: "План 6 мес — за 1 мес · 20+ TOP",
   },
   {
     slug: "hayatkabel",
@@ -269,7 +269,7 @@ export default function CasesPage() {
               </div>
             </div>
             <div className="stat">
-              <div className="n">8</div>
+              <div className="n">15</div>
               <div className="t">
                 <span data-uz>noyabrdan · 100% ushlangan</span>
                 <span data-ru>с ноября · удержание 100%</span>

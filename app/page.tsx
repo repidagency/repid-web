@@ -975,8 +975,8 @@ export default function Home() {
             <div className="wrow">
               <div className="ic">🚀</div>
               <h3>
-                <span data-uz>14 ta soha</span>
-                <span data-ru>14 ниш</span>
+                <span data-uz>24 ta soha</span>
+                <span data-ru>24 ниш</span>
               </h3>
               <p>
                 <span data-uz>Klinikadan ERP/SAP gacha — tizim universal.</span>
