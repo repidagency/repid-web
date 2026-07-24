@@ -234,10 +234,12 @@ h3 {
   border-radius: 999px;
   background: #fff;
 }
+.lang a,
 .lang button {
   background: none;
   border: 0;
   font: inherit;
+  text-decoration: none;
   font-size: 12px;
   font-weight: 600;
   padding: 5px 11px;
@@ -246,6 +248,7 @@ h3 {
   cursor: pointer;
   letter-spacing: 0.04em;
 }
+.lang a.on,
 .lang button.on {
   background: var(--ink);
   color: #fff;
@@ -2863,6 +2866,7 @@ section {
     height: 26px;
     font-size: 13px;
   }
+  .lang a,
   .lang button {
     padding: 5px 9px;
     font-size: 11px;

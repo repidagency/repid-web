@@ -1,22 +1,18 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import type { Lang } from "./i18n";
 
-type Lang = "uz" | "ru";
 const t = (uz: string, ru: string, lang: Lang) => (lang === "uz" ? uz : ru);
 
-export default function LeadForm({ source = "main" }: { source?: string }) {
-  const [lang, setLang] = useState<Lang>("uz");
+export default function LeadForm({
+  source = "main",
+  lang,
+}: {
+  source?: string;
+  lang: Lang;
+}) {
   const [state, setState] = useState<"idle" | "loading" | "ok" | "err">("idle");
   const [err, setErr] = useState("");
-
-  // Sahifa yuklanganda tilni data-lang atributidan olish
-  useEffect(() => {
-    if (typeof document !== "undefined") {
-      const cur =
-        (document.documentElement.getAttribute("data-lang") as Lang) || "uz";
-      setLang(cur);
-    }
-  }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

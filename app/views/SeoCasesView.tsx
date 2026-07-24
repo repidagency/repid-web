@@ -1,8 +1,9 @@
 import fs from "fs";
 import path from "path";
-import LeadForm from "../../LeadForm";
-import Nav from "../../Nav";
-import Footer from "../../Footer";
+import LeadForm from "../LeadForm";
+import Nav from "../Nav";
+import Footer from "../Footer";
+import { Lang as LangFilter, type Lang } from "../i18n";
 
 const TG = "https://t.me/Oybek_0487";
 
@@ -244,10 +245,10 @@ function hasImage(slug: string): boolean {
   }
 }
 
-export default function CasesPage() {
+export default function SeoCasesView({ lang }: { lang: Lang }) {
   return (
-    <>
-      <Nav />
+    <LangFilter lang={lang}>
+      <Nav lang={lang} path="/service/seo" />
 
       <section className="cases-hero">
         <div className="wrap">
@@ -445,7 +446,7 @@ export default function CasesPage() {
                 бюджет нужен.
               </span>
             </p>
-            <LeadForm source="cases" />
+            <LeadForm source="cases" lang={lang} />
           </div>
           <div
             style={{
@@ -464,7 +465,7 @@ export default function CasesPage() {
         </div>
       </section>
 
-      <Footer />
-    </>
+      <Footer lang={lang} />
+    </LangFilter>
   );
 }
