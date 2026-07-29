@@ -6,6 +6,10 @@ import { NICHES, findNiche, type Niche } from "./niches";
 type Lang = "uz" | "ru";
 type Tariff = "starter" | "growth" | "pro";
 
+// organicShare — доля месячного поиска, которую тариф забирает органикой (SEO),
+//   выходит на эти значения к 4-6 месяцу работы; Starter без SEO = 0.
+// landingMul — лендинг/сайт в тарифе поднимает конверсию клика в лид.
+// qualityMul — аналитика и скрипты продаж поднимают конверсию лида в клиента.
 const TARIFFS: Record<
   Tariff,
   {
@@ -14,7 +18,8 @@ const TARIFFS: Record<
     descUz: string;
     descRu: string;
     fee: number;
-    trafficMul: number;
+    organicShare: number;
+    landingMul: number;
     qualityMul: number;
   }
 > = {
@@ -24,7 +29,8 @@ const TARIFFS: Record<
     descUz: "Faqat Google Ads, oddiy landing",
     descRu: "Только Google Ads, простая посадочная",
     fee: 300,
-    trafficMul: 1.0,
+    organicShare: 0,
+    landingMul: 1.0,
     qualityMul: 1.0,
   },
   growth: {
@@ -33,7 +39,8 @@ const TARIFFS: Record<
     descUz: "Ads + SEO + landing",
     descRu: "Ads + SEO + лендинг",
     fee: 600,
-    trafficMul: 1.15,
+    organicShare: 0.02,
+    landingMul: 1.1,
     qualityMul: 1.15,
   },
   pro: {
@@ -42,7 +49,8 @@ const TARIFFS: Record<
     descUz: "Ads + SEO + sayt + analitika + skriptlar",
     descRu: "Ads + SEO + сайт + аналитика + скрипты",
     fee: 1000,
-    trafficMul: 1.3,
+    organicShare: 0.035,
+    landingMul: 1.2,
     qualityMul: 1.3,
   },
 };
@@ -85,30 +93,47 @@ export default function Calculator() {
   );
   const t = TARIFFS[tariff];
 
+  // Средний чек и маржа — самые индивидуальные величины, поэтому их можно
+  // переопределить руками. По умолчанию берём среднее по нише.
+  const [check, setCheck] = useState<number>(niche.avgCheck);
+  const [margin, setMargin] = useState<number>(niche.margin);
+  useEffect(() => {
+    setCheck(niche.avgCheck);
+    setMargin(niche.margin);
+  }, [niche]);
+
   // Core formulas (kept transparent, intentionally conservative).
-  // Cap clicks by realistic market ceiling: ~12% of all monthly searches can be captured
-  // (paid + organic top combined). Prevents nonsense for narrow B2B niches.
+  // Платный трафик ограничен ёмкостью рынка: ~12% месячного поиска максимум,
+  // что реально забрать рекламой. Иначе для узких B2B-ниш выходит бессмыслица.
   const rawClicks = budget / niche.avgCpc;
   const marketCap = niche.monthlySearch * 0.12;
-  const clicks = Math.min(rawClicks, marketCap);
+  const paidClicks = Math.min(rawClicks, marketCap);
   const capped = rawClicks > marketCap;
-  const ctl = Math.min(0.2, (niche.clickToLead / 100) * t.trafficMul);
+  // SEO не покупается бюджетом — он добавляет собственный органический трафик
+  // сверх платного потолка (выход на эти цифры к 4-6 месяцу).
+  const organicClicks = niche.monthlySearch * t.organicShare;
+  const clicks = paidClicks + organicClicks;
+
+  const ctl = Math.min(0.2, (niche.clickToLead / 100) * t.landingMul);
   const leads = clicks * ctl;
   const ltc = Math.min(0.6, (niche.leadToCustomer / 100) * t.qualityMul);
   const customers = leads * ltc;
-  const revenue = customers * niche.avgCheck;
-  const ltv = customers * niche.avgCheck * Math.max(1, niche.ltvMonths);
 
+  const revenue = customers * check;
+  // Прибыль считаем от валовой маржи, а не от выручки — иначе цифра врёт.
+  const grossProfit = revenue * (margin / 100);
   const totalCost = budget + t.fee;
-  const profit = revenue - totalCost;
+  const profit = grossProfit - totalCost;
   const roi = totalCost > 0 ? (profit / totalCost) * 100 : 0;
+  const ltv = grossProfit * Math.max(1, niche.ltvMonths);
 
-  const cpl = leads > 0 ? budget / leads : 0;
+  // Обе цены считаем от полных затрат (бюджет + агентство) — так их сравнивают.
+  const cpl = leads > 0 ? totalCost / leads : 0;
   const cac = customers > 0 ? totalCost / customers : 0;
 
-  // SEO compounds over months 2-3; explicit assumption shown in tooltip text.
-  const month3Revenue = revenue * 3 * 1.1;
-  const month6Revenue = revenue * 6 * 1.2;
+  // Накопительная прибыль: SEO разгоняется на 2-3 месяце (+10% / +20%).
+  const profit3 = grossProfit * 3 * 1.1 - totalCost * 3;
+  const profit6 = grossProfit * 6 * 1.2 - totalCost * 6;
 
   // Audit form (no niche match)
   const [auditOpen, setAuditOpen] = useState(false);
@@ -197,6 +222,54 @@ export default function Calculator() {
               </div>
             </div>
 
+            <div className="calc-row two-col">
+              <div>
+                <label>
+                  <span data-uz>Sizning o‘rtacha chekingiz ($)</span>
+                  <span data-ru>Ваш средний чек ($)</span>
+                </label>
+                <input
+                  className="calc-num"
+                  type="number"
+                  min={1}
+                  step={1}
+                  value={check}
+                  onChange={(e) =>
+                    setCheck(Math.max(1, Number(e.target.value) || 1))
+                  }
+                />
+              </div>
+              <div>
+                <label>
+                  <span data-uz>Marja (%)</span>
+                  <span data-ru>Маржа (%)</span>
+                </label>
+                <input
+                  className="calc-num"
+                  type="number"
+                  min={1}
+                  max={100}
+                  step={1}
+                  value={margin}
+                  onChange={(e) =>
+                    setMargin(
+                      Math.min(100, Math.max(1, Number(e.target.value) || 1)),
+                    )
+                  }
+                />
+              </div>
+              <div className="calc-hint">
+                <span data-uz>
+                  Marja — chekdan tannarx chiqib ketgandan keyin qoladigan ulush.
+                  Foyda shundan hisoblanadi.
+                </span>
+                <span data-ru>
+                  Маржа — доля чека, которая остаётся после себестоимости. Прибыль
+                  считаем именно от неё.
+                </span>
+              </div>
+            </div>
+
             <div className="calc-row">
               <label>
                 <span data-uz>Hamkorlik formati</span>
@@ -278,6 +351,16 @@ export default function Calculator() {
                   <span data-ru>Клики</span>
                 </div>
                 <div className="ck-v">{fmtNum(clicks)}</div>
+                {organicClicks > 0 && (
+                  <div className="ck-sub">
+                    <span data-uz>
+                      shundan {fmtNum(organicClicks)} — SEO (organika)
+                    </span>
+                    <span data-ru>
+                      из них {fmtNum(organicClicks)} — SEO (органика)
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="ck purple">
                 <div className="ck-l">
@@ -319,17 +402,27 @@ export default function Calculator() {
               </div>
               <div className="ck small">
                 <div className="ck-l">
-                  <span data-uz>3 oy</span>
-                  <span data-ru>3 мес</span>
+                  <span data-uz>Foyda · 3 oy</span>
+                  <span data-ru>Прибыль · 3 мес</span>
                 </div>
-                <div className="ck-v">{fmtMoney(month3Revenue)}</div>
+                <div
+                  className="ck-v"
+                  style={{ color: profit3 > 0 ? "#22D3A5" : "#F5A623" }}
+                >
+                  {fmtMoney(profit3)}
+                </div>
               </div>
               <div className="ck small">
                 <div className="ck-l">
-                  <span data-uz>6 oy</span>
-                  <span data-ru>6 мес</span>
+                  <span data-uz>Foyda · 6 oy</span>
+                  <span data-ru>Прибыль · 6 мес</span>
                 </div>
-                <div className="ck-v">{fmtMoney(month6Revenue)}</div>
+                <div
+                  className="ck-v"
+                  style={{ color: profit6 > 0 ? "#22D3A5" : "#F5A623" }}
+                >
+                  {fmtMoney(profit6)}
+                </div>
               </div>
             </div>
 
@@ -340,8 +433,13 @@ export default function Calculator() {
                 <b> {fmtMoney(totalCost)}</b>
               </div>
               <div>
-                <span data-uz>Foyda 1 oyda:</span>
-                <span data-ru>Прибыль за 1 месяц:</span>
+                <span data-uz>Yalpi marja ({margin}%):</span>
+                <span data-ru>Валовая маржа ({margin}%):</span>
+                <b> {fmtMoney(grossProfit)}</b>
+              </div>
+              <div>
+                <span data-uz>Sof foyda 1 oyda:</span>
+                <span data-ru>Чистая прибыль за 1 месяц:</span>
                 <b style={{ color: profit > 0 ? "#22D3A5" : "#F5A623" }}>
                   {" "}
                   {fmtMoney(profit)}
@@ -353,9 +451,22 @@ export default function Calculator() {
                   {roi.toFixed(0)}%
                 </b>
                 {" · "}
-                <span data-uz>LTV (~{niche.ltvMonths} oy):</span>
-                <span data-ru>LTV (~{niche.ltvMonths} мес):</span>
+                <span data-uz>
+                  LTV foyda (~{niche.ltvMonths} oy):
+                </span>
+                <span data-ru>LTV по прибыли (~{niche.ltvMonths} мес):</span>
                 <b> {fmtMoney(ltv)}</b>
+              </div>
+              <div className="calc-disclaimer">
+                <span data-uz>
+                  Bu — prognoz, kafolat emas. Hisob bozor o‘rtachasi va bizning
+                  keyslarimiz asosida: chek va marja — sizniki, qolgani — soha
+                  statistikasi.
+                </span>
+                <span data-ru>
+                  Это прогноз, а не гарантия. Расчёт по средним данным рынка и
+                  нашим кейсам: чек и маржа — ваши, остальное — статистика ниши.
+                </span>
               </div>
             </div>
           </div>
