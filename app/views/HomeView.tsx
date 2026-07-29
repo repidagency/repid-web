@@ -1,14 +1,15 @@
-import LeadForm from "./LeadForm";
-import Nav from "./Nav";
-import Footer from "./Footer";
-import Calculator from "./Calculator";
+import LeadForm from "../LeadForm";
+import Nav from "../Nav";
+import Footer from "../Footer";
+import Calculator from "../Calculator";
+import { Lang as LangFilter, href, type Lang } from "../i18n";
 
 const TG = "https://t.me/Oybek_0487";
 
-export default function Home() {
+export default function HomeView({ lang }: { lang: Lang }) {
   return (
-    <>
-      <Nav />
+    <LangFilter lang={lang}>
+      <Nav lang={lang} path="/" />
 
       {/* HERO DARK */}
       <header className="hero hero-dark">
@@ -491,7 +492,7 @@ export default function Home() {
       </section>
 
       {/* ROI CALCULATOR — live, interactive */}
-      <Calculator />
+      <Calculator lang={lang} />
 
       {/* CASES PREVIEW */}
       <section id="cases">
@@ -610,7 +611,7 @@ export default function Home() {
             </div>
           </div>
           <div className="proof-cta">
-            <a href="/service/seo" className="btn btn-d">
+            <a href={href(lang, "/service/seo")} className="btn btn-d">
               <span data-uz>Barcha 24 ta loyihani ko‘rish →</span>
               <span data-ru>Смотреть все 24 проектов →</span>
             </a>
@@ -914,7 +915,7 @@ export default function Home() {
                 </span>
                 <span data-ru>5 созвонов в месяц — «один клиент на нишу».</span>
               </p>
-              <LeadForm source="call-block" />
+              <LeadForm source="call-block" lang={lang} />
             </div>
           </div>
         </div>
@@ -1289,7 +1290,7 @@ export default function Home() {
                 нишу».
               </span>
             </p>
-            <LeadForm source="final" />
+            <LeadForm source="final" lang={lang} />
           </div>
           <div
             style={{
@@ -1308,7 +1309,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Footer />
-    </>
+      <Footer lang={lang} />
+    </LangFilter>
   );
 }

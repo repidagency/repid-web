@@ -1,22 +1,18 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import type { Lang } from "./i18n";
 
-type Lang = "uz" | "ru";
 const t = (uz: string, ru: string, lang: Lang) => (lang === "uz" ? uz : ru);
 
-export default function LeadForm({ source = "main" }: { source?: string }) {
-  const [lang, setLang] = useState<Lang>("uz");
+export default function LeadForm({
+  source = "main",
+  lang,
+}: {
+  source?: string;
+  lang: Lang;
+}) {
   const [state, setState] = useState<"idle" | "loading" | "ok" | "err">("idle");
   const [err, setErr] = useState("");
-
-  // Sahifa yuklanganda tilni data-lang atributidan olish
-  useEffect(() => {
-    if (typeof document !== "undefined") {
-      const cur =
-        (document.documentElement.getAttribute("data-lang") as Lang) || "uz";
-      setLang(cur);
-    }
-  }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,44 +55,24 @@ export default function LeadForm({ source = "main" }: { source?: string }) {
     setState("loading");
     setErr("");
 
-    // Telegram sozlamalari
-    const TELEGRAM_TOKEN = "7923365092:AAER9qijpXSM0kULfbY95PnWJSRC3TYu5n8";
-    const TELEGRAM_CHAT_ID = "-1002822086175";
-
-    // Telegram xabari matnini shakllantirish
-    let message = `🔔 *Yangi ariza keldi!*\n\n`;
-    message += `🌐 *Manba:* ${source}\n`;
-    message += `🗣️ *Til:* ${lang.toUpperCase()}\n`;
-    message += `───────────────────\n`;
-
-    fields.forEach((item) => {
-      message += `▪️ *${item.label}:* ${item.value}\n`;
-    });
-
+    // Отправка только через свой сервер: токен бота не должен попадать в браузер,
+    // и запрос не зависит от того, доступен ли Telegram у посетителя.
     try {
-      // To'g'ridan-to'g'ri Telegram API'ga so'rov yuborish
-      const r = await fetch(
-        `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: TELEGRAM_CHAT_ID,
-            text: message,
-            parse_mode: "Markdown",
-          }),
-        },
-      );
-
-      if (!r.ok) throw new Error("Telegram API error");
+      const r = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source, lang, fields }),
+      });
+      if (!r.ok) throw new Error("http " + r.status);
 
       setState("ok");
       (e.target as HTMLFormElement).reset();
     } catch (x: unknown) {
+      // Заявка не должна упираться в тупик: даём прямые контакты.
       setErr(
         t(
-          "Yuborishda xato. Iltimos, qaytadan urinib ko‘ring.",
-          "Ошибка отправки. Попробуйте ещё раз.",
+          "Yuborishda xato. Iltimos, to‘g‘ridan-to‘g‘ri yozing: +998 97 770-04-87 yoki Telegram @Oybek_0487",
+          "Ошибка отправки. Напишите напрямую: +998 97 770-04-87 или Telegram @Oybek_0487",
           lang,
         ),
       );

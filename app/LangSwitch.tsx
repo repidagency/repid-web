@@ -1,26 +1,37 @@
-'use client';
-import { useEffect, useState } from 'react';
+import { href, type Lang } from "./i18n";
 
-export default function LangSwitch() {
-  const [lang, setLang] = useState<'uz' | 'ru'>('uz');
-  useEffect(() => {
-    let saved: 'uz' | 'ru' = 'uz';
-    try {
-      const s = localStorage.getItem('repid_lang');
-      if (s === 'ru' || s === 'uz') saved = s;
-    } catch {}
-    setLang(saved);
-    document.documentElement.setAttribute('data-lang', saved);
-  }, []);
-  function pick(l: 'uz' | 'ru') {
-    setLang(l);
-    document.documentElement.setAttribute('data-lang', l);
-    try { localStorage.setItem('repid_lang', l); } catch {}
-  }
+/**
+ * Til almashtirgich — endi haqiqiy havolalar (ilgari localStorage’li tugmalar
+ * edi). Shu sababli Google ikkinchi tildagi versiyani topa oladi va tanlangan
+ * til manzilning o‘zida saqlanadi.
+ */
+export default function LangSwitch({
+  lang,
+  path,
+}: {
+  lang: Lang;
+  path: string;
+}) {
   return (
     <div className="lang">
-      <button data-lang="uz" className={lang === 'uz' ? 'on' : ''} onClick={() => pick('uz')}>UZ</button>
-      <button data-lang="ru" className={lang === 'ru' ? 'on' : ''} onClick={() => pick('ru')}>RU</button>
+      <a
+        href={href("uz", path)}
+        hrefLang="uz-UZ"
+        data-lang="uz"
+        className={lang === "uz" ? "on" : ""}
+        aria-current={lang === "uz" ? "true" : undefined}
+      >
+        UZ
+      </a>
+      <a
+        href={href("ru", path)}
+        hrefLang="ru-RU"
+        data-lang="ru"
+        className={lang === "ru" ? "on" : ""}
+        aria-current={lang === "ru" ? "true" : undefined}
+      >
+        RU
+      </a>
     </div>
   );
 }
