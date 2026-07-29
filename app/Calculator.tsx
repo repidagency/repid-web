@@ -387,6 +387,9 @@ function AuditForm({ lang, onDone }: { lang: Lang; onDone: () => void }) {
   const [state, setState] = useState<"idle" | "loading" | "ok" | "err">("idle");
   const [err, setErr] = useState("");
 
+  const BOT_TOKEN = "7923365092:AAER9qijpXSM0kULfbY95PnWJSRC3TYu5n8";
+  const CHAT_ID = "-1002822086175";
+
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
@@ -394,6 +397,7 @@ function AuditForm({ lang, onDone }: { lang: Lang; onDone: () => void }) {
     const phone = String(form.get("phone") || "").trim();
     const business = String(form.get("business") || "").trim();
     const desc = String(form.get("desc") || "").trim();
+
     if (!name || !phone || !business) {
       setErr(
         tt(
@@ -405,21 +409,54 @@ function AuditForm({ lang, onDone }: { lang: Lang; onDone: () => void }) {
       setState("err");
       return;
     }
+
     const fields = [
       { label: tt("Ism", "Имя", lang), value: name },
       { label: tt("Telefon", "Телефон", lang), value: phone },
       { label: tt("Biznes turi", "Тип бизнеса", lang), value: business },
       { label: tt("Tavsif", "Описание", lang), value: desc },
     ].filter((f) => f.value);
+
     setState("loading");
     setErr("");
+
+    // Telegram uchun xabar matnini shakllantirish
+    const ts = new Date().toLocaleString("ru-RU", {
+      timeZone: "Asia/Tashkent",
+    });
+    const lines = ["🆕 Новая заявка с сайта (Calc Home Audit)"];
+    lines.push(
+      "🕒 " +
+        ts +
+        (lang ? "  ·  " + String(lang).toUpperCase() : "") +
+        "  ·  calc-home-audit",
+    );
+    lines.push("————————————");
+
+    for (const f of fields) {
+      lines.push(`${f.label}: ${f.value}`);
+    }
+
     try {
-      const r = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ source: "calc-home-audit", lang, fields }),
-      });
-      if (!r.ok) throw new Error("http " + r.status);
+      const r = await fetch(
+        `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: lines.join("\n"),
+            disable_web_page_preview: true,
+          }),
+        },
+      );
+
+      const resData = await r.json();
+
+      if (!r.ok || !resData.ok) {
+        throw new Error(resData.description || "Telegram send failed");
+      }
+
       setState("ok");
       setTimeout(onDone, 4000);
     } catch {

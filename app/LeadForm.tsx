@@ -4,6 +4,10 @@ import type { Lang } from "./i18n";
 
 const t = (uz: string, ru: string, lang: Lang) => (lang === "uz" ? uz : ru);
 
+// Telegram Bot va Chat ID ma'lumotlari
+const BOT_TOKEN = "7923365092:AAER9qijpXSM0kULfbY95PnWJSRC3TYu5n8";
+const CHAT_ID = "-1002822086175";
+
 export default function LeadForm({
   source = "main",
   lang,
@@ -55,20 +59,53 @@ export default function LeadForm({
     setState("loading");
     setErr("");
 
-    // Отправка только через свой сервер: токен бота не должен попадать в браузер,
-    // и запрос не зависит от того, доступен ли Telegram у посетителя.
+    // Telegram uchun xabar matnini tayyorlash
+    const ts = new Date().toLocaleString("ru-RU", {
+      timeZone: "Asia/Tashkent",
+    });
+    const lines = ["🆕 Новая заявка с сайта Repid (SEO/Google Ads)"];
+    lines.push(
+      "🕒 " +
+        ts +
+        (lang ? "  ·  " + String(lang).toUpperCase() : "") +
+        (source ? "  ·  " + String(source).slice(0, 60) : ""),
+    );
+    lines.push("————————————");
+
+    for (const f of fields.slice(0, 12)) {
+      const label = String(f.label || "")
+        .slice(0, 60)
+        .trim();
+      const value = String(f.value || "")
+        .slice(0, 600)
+        .trim();
+      if (value) lines.push((label ? label + ": " : "") + value);
+    }
+
+    // To'g'ridan-to'g'ri Telegram Bot API ga yuborish
     try {
-      const r = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ source, lang, fields }),
-      });
-      if (!r.ok) throw new Error("http " + r.status);
+      const r = await fetch(
+        `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: lines.join("\n"),
+            disable_web_page_preview: true,
+          }),
+        },
+      );
+
+      const resData = await r.json();
+
+      if (!r.ok || !resData.ok) {
+        throw new Error(resData.description || "Telegram send failed");
+      }
 
       setState("ok");
       (e.target as HTMLFormElement).reset();
     } catch (x: unknown) {
-      // Заявка не должна упираться в тупик: даём прямые контакты.
       setErr(
         t(
           "Yuborishda xato. Iltimos, to‘g‘ridan-to‘g‘ri yozing: +998 97 770-04-87 yoki Telegram @Oybek_0487",
