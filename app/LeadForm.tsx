@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Lang } from "./i18n";
 
 const t = (uz: string, ru: string, lang: Lang) => (lang === "uz" ? uz : ru);
@@ -15,6 +16,7 @@ export default function LeadForm({
   source?: string;
   lang: Lang;
 }) {
+  const router = useRouter();
   const [state, setState] = useState<"idle" | "loading" | "ok" | "err">("idle");
   const [err, setErr] = useState("");
 
@@ -105,6 +107,10 @@ export default function LeadForm({
 
       setState("ok");
       (e.target as HTMLFormElement).reset();
+
+      // Tanlangan tilga qarab thank-you sahifasiga yo'naltirish
+      const thankYouUrl = lang === "ru" ? "/ru/thank-you" : "/thank-you";
+      router.push(thankYouUrl);
     } catch (x: unknown) {
       setErr(
         t(

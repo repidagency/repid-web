@@ -383,8 +383,17 @@ export default function Calculator({ lang }: { lang: Lang }) {
   );
 }
 
-function AuditForm({ lang, onDone }: { lang: Lang; onDone: () => void }) {
-  const [state, setState] = useState<"idle" | "loading" | "ok" | "err">("idle");
+import { useRouter } from "next/navigation"; // Router import qilindi
+
+export function AuditForm({
+  lang,
+  onDone,
+}: {
+  lang: Lang;
+  onDone: () => void;
+}) {
+  const router = useRouter(); // Router hook
+  const [state, setState] = useState<"idle" | "loading" | "err">("idle");
   const [err, setErr] = useState("");
 
   const BOT_TOKEN = "7923365092:AAER9qijpXSM0kULfbY95PnWJSRC3TYu5n8";
@@ -420,7 +429,6 @@ function AuditForm({ lang, onDone }: { lang: Lang; onDone: () => void }) {
     setState("loading");
     setErr("");
 
-    // Telegram uchun xabar matnini shakllantirish
     const ts = new Date().toLocaleString("ru-RU", {
       timeZone: "Asia/Tashkent",
     });
@@ -457,30 +465,16 @@ function AuditForm({ lang, onDone }: { lang: Lang; onDone: () => void }) {
         throw new Error(resData.description || "Telegram send failed");
       }
 
-      setState("ok");
-      setTimeout(onDone, 4000);
+      // Agar onDone callback bo'lsa chaqiriladi (modal yopilishi va h.k.)
+      if (onDone) onDone();
+
+      // Tilga mos holda "Thank you" sahifasiga redirect qilish
+      const targetPath = lang === "ru" ? "/ru/thank-you" : "/thank-you";
+      router.push(targetPath);
     } catch {
       setErr(tt("Yuborishda xato", "Ошибка отправки", lang));
       setState("err");
     }
-  }
-
-  if (state === "ok") {
-    return (
-      <LangFilter lang={lang}>
-        <div className="ca-ok">
-          <div className="ok-ic">✓</div>
-          <p>
-            <span data-uz>
-              Audit so‘rovi qabul qilindi. 24 soat ichida bog‘lanamiz.
-            </span>
-            <span data-ru>
-              Запрос на аудит принят. Свяжемся в течение 24 часов.
-            </span>
-          </p>
-        </div>
-      </LangFilter>
-    );
   }
 
   return (
